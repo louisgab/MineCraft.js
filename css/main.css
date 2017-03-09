@@ -41,21 +41,3 @@ canvas {
     width: 70%;
     vertical-align: top;
 }
-#sidebar {
-    display: inline-block;
-    width: 29%;
-    vertical-align: top;
-    height: auto;
-}
-#users {
-    height: 100%;
-    overflow-y: scroll;
-    margin: 0;
-    padding: 20px;
-    list-style-type: none;
-}
-#count {
-    font-weight: 700;
-    text-align: center;
-    padding: 20px;
-}
