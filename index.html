@@ -1,0 +1,88 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <title>Multiplayer Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/sanitize.css">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <h1>Messagerie Instantannée</h1>
+        <div id="window">
+            <div id="content">
+                <canvas id="canvas"></canvas>
+            </div>
+            <div id="sidebar">
+                <div id="count"></div>
+                <ul id="users">
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        function addMessage(message, user) {
+            var ul = document.getElementById("chat"),
+                li = document.createElement('li');
+            li.className = "bulle";
+            if (user == pseudo) {
+                li.innerHTML = '<span class="right">' + message + '</span>';
+            } else {
+                li.innerHTML = '<span class="left">' + user + " : " + message + '</span>';
+            }
+            ul.appendChild(li);
+            ul.scrollTop = ul.scrollHeight; //scroll window to bottom
+        }
+
+        function addUser(user) {
+            var ul = document.getElementById("users"),
+                li = document.createElement('li');
+            if (user == pseudo) {
+                li.innerHTML = user + " (vous)";
+            } else {
+                li.innerHTML = user;
+            }
+            ul.appendChild(li);
+        }
+
+        window.onload = function() {
+            var canvas = document.getElementById('canvas');
+            var ctx = canvas.getContext('2d');
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(10, 10, 100, 50);
+            ctx.strokeStyle = 'red';
+            ctx.strokeRect(75, 75, 50, 50);
+        }
+        s
+        var socket = io.connect('http://localhost:8080'),
+            pseudo = prompt('Quel est votre pseudo ?');
+
+        socket.emit('new_user', pseudo);
+
+        socket.on('new_message', function(data) {
+            addMessage(data.message, data.pseudo);
+        });
+
+        document.form.addEventListener("submit", function(e) {
+            e.preventDefault();
+            addMessage(document.form.message.value, pseudo);
+            socket.emit('new_message', document.form.message.value);
+            document.form.message.value = ""; // reset input
+        });
+
+        socket.on('online_users', function(userlist) {
+            document.getElementById("users").innerHTML = "";
+            userlist.forEach(function(user) {
+                addUser(user);
+            });
+            document.getElementById("count").innerHTML = "Utilisateurs (" + userlist.length + ")";
+        });
+    </script>
+</body>
+<!-- Created by Louis-Gabriel - https://github.com/louisgab/InstantChat -->
+
+</html>
