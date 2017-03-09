@@ -6,7 +6,7 @@ var http = require('http'),
 
 server.on('request', function(req, res) {
     switch (req.url) {
-        case "/index.html":
+        case "/":
             fs.readFile('./index.html', 'utf-8', function(err, content) {
                 if (err) console.log(err);
                 res.writeHead(200, {
