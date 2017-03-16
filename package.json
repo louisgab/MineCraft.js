@@ -1,0 +1,10 @@
+{
+    "name": "MinecraftJs",
+    "version": "0.0.1",
+    "dependencies": {
+        "express": "~4.15.2",
+        "socket.io": "~1.7.3"
+    },
+    "author": "Alex & Louis",
+    "description": "Minecraft-like in 2D"
+}

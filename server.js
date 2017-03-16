@@ -1,68 +1,58 @@
-var http = require('http'),
-    fs = require('fs'),
-    server = http.createServer(),
+/* Modules and init */
+var express = require('express'),
+    app = express();
+    server = require('http').createServer(app),
     io = require('socket.io').listen(server),
-    userlist = [];
+    fs = require('fs');
 
-server.on('request', function(req, res) {
-    switch (req.url) {
-        case "/":
-            fs.readFile('./index.html', 'utf-8', function(err, content) {
-                if (err) console.log(err);
-                res.writeHead(200, {
-                    "Content-Type": "text/html"
-                });
-                res.end(content);
-            });
-            break;
-        case "/css/sanitize.css":
-            fs.readFile('./css/sanitize.css', 'utf-8', function(err, content) {
-                if (err) console.log(err);
-                res.writeHead(200, {
-                    'Content-Type': 'text/css'
-                });
-                res.end(content);
-            });
-            break;
-        case "/css/main.css":
-            fs.readFile('./css/main.css', function(err, content) {
-                if (err) console.log(err);
-                res.writeHead(200, {
-                    'Content-Type': 'text/css'
-                });
-                res.end(content);
-            });
-            break;
-        default:
-            res.writeHead(404, {
-                'Content-Type': 'text/html'
-            });
-            res.end("Erreur 404");
-            break;
-    }
-});
+/* Serve static files (css, img...) */
+app.use(express.static('public'));
 
-io.sockets.on('connection', function(socket, pseudo) {
-    socket.on('new_user', function(pseudo) {
-        userlist.push(pseudo);
-        socket.pseudo = pseudo;
-        socket.emit('online_users', userlist);
-        socket.broadcast.emit('online_users', userlist);
-        console.log('Nombre de connectés : ' + userlist.length);
+/* Load main page */
+app.get('/', function (req, res){
+    res.sendFile(__dirname+'/index.html');
+})
+
+/* Variables */
+var  players = [];
+
+/* Player object */
+function Player(id){
+    this.id = id;
+    this.x = 0;
+    this.y = 0;
+}
+
+io.sockets.on('connection', function(client) {
+    console.log('New connexion : '+client.id);
+
+    /* Player join */
+    client.on('join', function(name) {
+        console.log(name + 'joined the game');
+        var newPlayer = Player(players.length);
+        players.push(newPlayer);
+        client.emit('online_users', players);
+        client.broadcast.emit('online_users', players);
+        console.log('Nombre de connectés : ' + players.length);
     });
-
-    socket.on('new_message', function(message) {
-        socket.broadcast.emit('new_message', {
-            pseudo: socket.pseudo,
+/*
+    client.on('new_message', function(message) {
+        client.broadcast.emit('new_message', {
+            pseudo: client.pseudo,
             message: message
         });
     });
 
-    socket.on("disconnect", function() {
-        var index = userlist.indexOf(socket.pseudo);
-        if (index != -1) userlist.splice(index, 1);
-        socket.broadcast.emit('online_users', userlist);
-        console.log('Nombre de connectés : ' + userlist.length);
+    client.on("disconnect", function() {
+    console.log('Deconnexion : ' + client.id);
+        var index = players.indexOf(client.pseudo);
+        if (index != -1) players.splice(index, 1);
+        client.broadcast.emit('online_users', players);
+        console.log('Nombre de connectés : ' + players.length);
     });
+*/
 });
+
+/* Start listening for clients */
 server.listen(8080);
+console.log('Server ready. Listening...')

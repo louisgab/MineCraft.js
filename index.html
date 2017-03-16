@@ -18,6 +18,7 @@
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
+    /*
         function addMessage(message, user) {
             var ul = document.getElementById("chat"),
                 li = document.createElement('li');
@@ -50,13 +51,13 @@
             ctx.strokeStyle = 'red';
             ctx.strokeRect(75, 75, 50, 50);
         }
-        s
+        */
         var socket = io.connect('http://localhost:8080'),
             pseudo = prompt('Quel est votre pseudo ?');
 
-        socket.emit('new_user', pseudo);
+        socket.emit('join', pseudo);
 
-        socket.on('new_message', function(data) {
+    /*    socket.on('new_message', function(data) {
             addMessage(data.message, data.pseudo);
         });
 
@@ -74,6 +75,7 @@
             });
             document.getElementById("count").innerHTML = "Utilisateurs (" + userlist.length + ")";
         });
+        */
     </script>
 </body>
 </html>
