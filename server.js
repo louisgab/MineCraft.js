@@ -1,43 +1,52 @@
-/* Modules and init */
-var express = require('express'),
-    app = express();
-    server = require('http').createServer(app),
-    io = require('socket.io').listen(server),
-    fs = require('fs'),
-    world = require('./world'),
-    player = require('./player');
+/* Dependencies */
+var express  = require('express'),
+    http     = require('http'),
+    socketio = require('socket.io'),
+    fs       = require('fs'),
+    world    = require('./world'),
+    game     = require('./game');
+
+/* Initialisation */
+var app     = express();
+    server  = http.createServer(app),
+    io      = socketio.listen(server);
 
 /* Serve static files (css, img...) */
-app.use(express.static('public'));
+app.use(express.static('client'));
 
 /* Load main page */
-app.get('/', function (req, res){
-    res.sendFile(__dirname+'/index.html');
+app.get('/', function(req, res) {
+    res.sendFile(__dirname + '/index.html');
 })
 
+/* Start listening for clients */
+server.listen(8080, function() {
+    console.log('Server ready. Listening...');
+});
+
+/* Messages processing */
 io.sockets.on('connection', function(client) {
-    console.log('New connexion : '+client.id);
 
     /* Player joins */
     client.on('join', function(name) {
-        var newPlayer = player.add(name);
-        client.id = newPlayer.id;
-        console.log(name + 'joined the game.');
+        game.addPlayer(client.id, name);
+        console.log(name + ' joined the game.');
     });
 
     /* Player moves */
-    client.on('move', function(data){
-        player.updatePosition(client.id, data);
-    }
+    client.on('move', function(movement) {
+        game.updatePlayer(client.id, movement);
+    });
 
     /* Player disconnects */
     client.on("disconnect", function() {
-        var name = player.getName(client.id);
-        console.log(name + 'disconnected.');
-        player.remove(client.id);
+        var name = game.getPlayerPseudo(client.id);
+        game.removePlayer(client.id);
+        console.log(name + ' left the game.');
     });
 });
 
-/* Start listening for clients */
-server.listen(8080);
-console.log('Server ready. Listening...')
+/* 60 FPS Loop */
+setInterval(function() {
+    io.sockets.emit('state', game.getState());
+}, 1000 / 60);

@@ -6,6 +6,7 @@
     <title>Multiplayer Game</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/sanitize.css">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <link rel="stylesheet" href="/css/main.css">
 </head>
 
@@ -17,63 +18,7 @@
         </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-        window.onload = function() {
-            var canvas = document.getElementById('canvas');
-            var ctx = canvas.getContext('2d');
-            var blockSize = 32;
-            ctx.clearRect(0, 0, 500, 500);
-            for (var i = 0; i < map.length; i++) {
-                for (var j = 0; j < map[i].length; j++) {
-                    drawTile = map[i][j];
-                    ctx.drawImage(tileGraphics[drawTile], (i - j) * tileH + mapX, (i + j) * tileH / 2 + mapY);
-                    if (playerX === i && playerY === j) {
-                        ctx.drawImage(tileGraphics[2], (i - j) * tileH + mapX, (i + j) * tileH / 2 + mapY - tileH);
-                    }
-                }
-            }
-            window.addEventListener("keyup", function(e) {
-                switch(e.keyCode) {
-                    case 37:
-                        playerX--;
-                    break;
-                    case 39:
-                        playerX++;
-                    break;
-                    case 38:
-                        playerY--;
-                    break;
-                    case 40:
-                        playerY++;
-                    break;
-                }
-                drawMap();
-            });
- };
-        var socket = io.connect('http://localhost:8080'),
-            pseudo = prompt('Quel est votre pseudo ?');
-
-        socket.emit('join', pseudo);
-
-    /*    socket.on('new_message', function(data) {
-            addMessage(data.message, data.pseudo);
-        });
-
-        document.form.addEventListener("submit", function(e) {
-            e.preventDefault();
-            addMessage(document.form.message.value, pseudo);
-            socket.emit('new_message', document.form.message.value);
-            document.form.message.value = ""; // reset input
-        });
-
-        socket.on('online_users', function(userlist) {
-            document.getElementById("users").innerHTML = "";
-            userlist.forEach(function(user) {
-                addUser(user);
-            });
-            document.getElementById("count").innerHTML = "Utilisateurs (" + userlist.length + ")";
-        });
-        */
-    </script>
+    <script src="/js/client.js"></script>
 </body>
+
 </html>

@@ -6,5 +6,6 @@
         "socket.io": "~1.7.3"
     },
     "author": "Alex & Louis",
-    "description": "Minecraft-like in 2D"
+    "description": "Minecraft-like in 2D",
+    "homepage": "https://github.com/louisgab/MineCraft.js"
 }
