@@ -18,40 +18,38 @@
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-    /*
-        function addMessage(message, user) {
-            var ul = document.getElementById("chat"),
-                li = document.createElement('li');
-            li.className = "bulle";
-            if (user == pseudo) {
-                li.innerHTML = '<span class="right">' + message + '</span>';
-            } else {
-                li.innerHTML = '<span class="left">' + user + " : " + message + '</span>';
-            }
-            ul.appendChild(li);
-            ul.scrollTop = ul.scrollHeight; //scroll window to bottom
-        }
-
-        function addUser(user) {
-            var ul = document.getElementById("users"),
-                li = document.createElement('li');
-            if (user == pseudo) {
-                li.innerHTML = user + " (vous)";
-            } else {
-                li.innerHTML = user;
-            }
-            ul.appendChild(li);
-        }
-
         window.onload = function() {
             var canvas = document.getElementById('canvas');
             var ctx = canvas.getContext('2d');
-            ctx.fillStyle = 'blue';
-            ctx.fillRect(10, 10, 100, 50);
-            ctx.strokeStyle = 'red';
-            ctx.strokeRect(75, 75, 50, 50);
-        }
-        */
+            var blockSize = 32;
+            ctx.clearRect(0, 0, 500, 500);
+            for (var i = 0; i < map.length; i++) {
+                for (var j = 0; j < map[i].length; j++) {
+                    drawTile = map[i][j];
+                    ctx.drawImage(tileGraphics[drawTile], (i - j) * tileH + mapX, (i + j) * tileH / 2 + mapY);
+                    if (playerX === i && playerY === j) {
+                        ctx.drawImage(tileGraphics[2], (i - j) * tileH + mapX, (i + j) * tileH / 2 + mapY - tileH);
+                    }
+                }
+            }
+            window.addEventListener("keyup", function(e) {
+                switch(e.keyCode) {
+                    case 37:
+                        playerX--;
+                    break;
+                    case 39:
+                        playerX++;
+                    break;
+                    case 38:
+                        playerY--;
+                    break;
+                    case 40:
+                        playerY++;
+                    break;
+                }
+                drawMap();
+            });
+ };
         var socket = io.connect('http://localhost:8080'),
             pseudo = prompt('Quel est votre pseudo ?');
 
