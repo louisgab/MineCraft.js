@@ -48,5 +48,5 @@ io.sockets.on('connection', function(client) {
 
 /* 60 FPS Loop */
 setInterval(function() {
-    io.sockets.emit('state', game.getState());
+    io.sockets.emit('update', { players: game.getPlayers(), map: game.getMap() });
 }, 1000 / 60);

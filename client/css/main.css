@@ -22,7 +22,7 @@ body {
 
 canvas {
     image-rendering: optimizeSpeed;
-    border         : 1px solid #333;
+    border         : 1px solid #DDD;
     width          : 1024px;
     height         : 800px;
 }
