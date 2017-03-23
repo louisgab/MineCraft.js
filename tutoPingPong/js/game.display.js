@@ -1,3 +1,4 @@
+//affichage
 game.display = {
   container : "",
   layer : {

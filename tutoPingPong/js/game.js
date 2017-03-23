@@ -10,7 +10,7 @@ var game = {
   scoreLayer : null,
   playersBallLayer : null,
   ball : {
-    speed : 7,
+    speed : 4,
    width : 10,
    height : 10,
    color : "#FFFFFF",
@@ -22,12 +22,24 @@ var game = {
       this.posX += this.directionX * this.speed;
       this.posY += this.directionY * this.speed;
     },
+  collision : function(){
+     if(this.posY+this.height < game.joueur.playerOne.posY || this.posY> game.joueur.playerOne.posY+game.joueur.playerOne.height || this.posX >game.joueur.playerOne.posX+game.joueur.playerOne.width || this.posX+this.width < game.joueur.playerOne.posX)
+         return false;
+     return true;
+   },
   bounce : function() {
-     if ( this.posX > game.groundWidth || this.posX < 0 )
+    if( this.collision(this , game.joueur.PlayerOne)){
+      this.directionX= -this.directionX;
+      this.directionY= -this.directionY;
+      return;
+    }
+     if( this.posX > game.groundWidth  || this.posX < 0  )
        this.directionX = -this.directionX;
-     if ( this.posY > game.groundHeight || this.posY < 0  )
+     if ( this.posY > game.groundHeight || this.posY < 0   )
        this.directionY = -this.directionY;
    }
+
+
  },
   // Principal fonction appelée pour lancer le jeux
   init : function() {
@@ -39,10 +51,12 @@ var game = {
 
       this.playersBallLayer = game.display.createLayer("joueursetballe", this.groundWidth, this.groundHeight, undefined, 2, undefined, 0, 0);
       game.display.drawTextInLayer(this.playersBallLayer, "JOUEURSETBALLE", "10px Arial", "#FF0000", 100, 100);
-  
+
   this.displayScore(0,0);
   this.displayBall(200,200);
   this.displayPlayers();
+
+  this.initKeyboard(game.control.onKeyDown, game.control.onKeyUp);// GEstion des touches du clavier
 
 },
 //Declaration d'autre fonction
@@ -67,6 +81,16 @@ moveBall : function() {
  },
  clearLayer : function(targetLayer) {
    targetLayer.clear();
+ },
+ initKeyboard : function(onKeyDownFunction, onKeyUpFunction) {
+    window.onkeydown = onKeyDownFunction;
+    window.onkeyup = onKeyUpFunction;
+  },
+  movePlayers : function() {
+   if (game.joueur.playerOne.goUp && game.joueur.playerOne.posY > 0)
+     game.joueur.playerOne.posY-=7;
+   else if (game.joueur.playerOne.goDown && game.joueur.playerOne.posY < game.groundHeight - game.joueur.playerOne.height)
+     game.joueur.playerOne.posY+=7;
  }
 
 };
