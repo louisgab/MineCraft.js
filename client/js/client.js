@@ -6,13 +6,13 @@ var preloader = {
     objects : {},
     url : {
         "dirt" : "/img/dirt.png"
-    }
+    },
     init : function(){
         for (var item in this.url) {
             var img = new Image();
             img.src = this.url[item];
             img.onload = function(){
-                this.objects[item] = img;
+                preloader.objects[item] = img;
             }
         }
     }
@@ -34,6 +34,7 @@ var client = {
         }
         canvas.width = 1024;
         canvas.height = 800;
+        preloader.init();
         socket.emit('join', this.pseudo);
     },
 
@@ -79,19 +80,19 @@ var client = {
 
     drawMap : function(){ //modifier draw image
         for(var row = 0 ; row < this.game.nbRows ; row++) {
-    		    for(var col = 0 ; col <  this.game.nbCols;col++) {
-              console.log(this.game.blocks[row][col]);
-              // var block   = this.game.blocks[row][col],
-              //     tileCol = block.col * this.game.tileSize,
-              //     tileRow = block.row * this.game.tileSize;
-              if(row > this.ground){
-                context.fillStyle = 'blue';
-                context.fillRect(tileCol, tileRow, this.game.tileSize, this.game.tileSize);
-            }//   else{
-            //   context.drawImage(/*A changer*/,tileCol, tileRow, 32, 32);
-            // }
-    		  }
-    	   }
+            for(var col = 0 ; col <  this.game.nbCols;col++) {
+                var block   = this.game.blocks[row][col],
+                    tileCol = col * this.game.tileSize,
+                    tileRow = row * this.game.tileSize;
+                if(row < this.game.ground){
+                    context.fillStyle = "#afecff";
+                    context.fillRect(tileCol, tileRow, this.game.tileSize, this.game.tileSize);
+                }
+                else{
+                    context.drawImage(preloader.objects[block.type],tileCol, tileRow, 32, 32);
+                }
+            }
+        }
     },
 
     drawPlayers : function(){
@@ -120,9 +121,9 @@ document.addEventListener("keyup", function(e){
 });
 
 // Track mouse
-document.addEventListener("mouseover", myFunction);
-document.addEventListener("mousedown", someOtherFunction);
-document.addEventListener("mouseout", someOtherFunction);
+// document.addEventListener("mouseover", myFunction);
+// document.addEventListener("mousedown", someOtherFunction);
+// document.addEventListener("mouseout", someOtherFunction);
 
 /* Update canvas */
 socket.on('update', function(game){

@@ -16,15 +16,14 @@ var game = {
         this.nbCols = this.canvasWidth / this.tileSize;
         this.isGenerated = true;
         for(var row = 0 ; row < this.nbRows ; row++) {
-            this.blocks[row] = {};
-        		for(var col = 0 ; col < this.nbCols ; col++) {
+        this.blocks[row] = {};
+            for(var col = 0 ; col < this.nbCols ; col++) {
                 if(row > this.ground){
-                  this.addBlock(row, col, "dirt");
+                    this.addBlock(row, col, "dirt");
                 }
-        		}
-  	     }
-         console.log(this.blocks);
-         console.log("World ready.");
+            }
+        }
+        console.log("World ready.");
     },
 
     addBlock : function(row, col, type){
@@ -44,8 +43,8 @@ var game = {
         var newPlayer = {
             id   : id,
             name : name,
-            col  : 0,
-            row  : 0
+            col  : this.nbCols/2,
+            row  : Math.floor(this.ground)
         }
         this.players[id] = newPlayer;
     },
