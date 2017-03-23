@@ -4,7 +4,7 @@ html, body {
 }
 
 body, button, html, input, textarea {
-    font-size     : 15px;15px;
+    font-size     : 15px;
     font-family   : 'Press Start 2P', cursive;
     text-rendering: optimizeLegibility;
     line-height   : 1.5;

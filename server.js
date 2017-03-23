@@ -3,7 +3,6 @@ var express  = require('express'),
     http     = require('http'),
     socketio = require('socket.io'),
     fs       = require('fs'),
-    world    = require('./world'),
     game     = require('./game');
 
 /* Initialisation */
@@ -29,24 +28,25 @@ io.sockets.on('connection', function(client) {
 
     /* Player joins */
     client.on('join', function(name) {
+        if(!game.isGenerated){
+            game.initMap();
+        }
         game.addPlayer(client.id, name);
+        io.sockets.emit('update', game);
         console.log(name + ' joined the game.');
     });
 
     /* Player moves */
     client.on('move', function(movement) {
         game.updatePlayer(client.id, movement);
+        io.sockets.emit('update', game);
     });
 
     /* Player disconnects */
     client.on("disconnect", function() {
         var name = game.getPlayerPseudo(client.id);
         game.removePlayer(client.id);
+        io.sockets.emit('update', game);
         console.log(name + ' left the game.');
     });
 });
-
-/* 60 FPS Loop */
-setInterval(function() {
-    io.sockets.emit('update', { players: game.getPlayers(), map: game.getMap() });
-}, 1000 / 60);
