@@ -60,7 +60,7 @@ var client = {
         this.game = game;
         context.clearRect(0, 0, game.canvasWidth, game.canvasHeight);
         this.drawGrid();
-        // drawMap();
+        this.drawMap();
         this.drawPlayers();
     },
 
@@ -77,22 +77,21 @@ var client = {
         context.stroke();
     },
 
-    drawMap : function(){
-        // for(var row = 0 ; row < NB_ROWS ; row++) {
-    	// 	for(var col = 0 ; col < NB_COLS col++) {
-        //         if(map[row][col]){
-        //             this.drawBlock(context, row, col);
-        //         }
-    	// 	}
-    	// }
-        // var xSourceEnTiles = id % TILE_SIZE;
-        // if(xSourceEnTiles == 0) xSourceEnTiles = TILE_SIZE;
-        // var ySourceEnTiles = Math.ceil(id / TILE_SIZE);
-        //
-        // var xSource = (xSourceEnTiles - 1) * 32;
-        // var ySource = (ySourceEnTiles - 1) * 32;
-        context.drawImage(this.image, xSource, ySource, 32, 32, xDestination, yDestination, 32, 32);
-
+    drawMap : function(){ //modifier draw image
+        for(var row = 0 ; row < this.game.nbRows ; row++) {
+    		    for(var col = 0 ; col <  this.game.nbCols;col++) {
+              console.log(this.game.blocks[row][col]);
+              // var block   = this.game.blocks[row][col],
+              //     tileCol = block.col * this.game.tileSize,
+              //     tileRow = block.row * this.game.tileSize;
+              if(row > this.ground){
+                context.fillStyle = 'blue';
+                context.fillRect(tileCol, tileRow, this.game.tileSize, this.game.tileSize);
+            }//   else{
+            //   context.drawImage(/*A changer*/,tileCol, tileRow, 32, 32);
+            // }
+    		  }
+    	   }
     },
 
     drawPlayers : function(){
