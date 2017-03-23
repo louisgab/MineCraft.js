@@ -5,26 +5,26 @@ var game = {
     canvasHeight : 800,
     nbRows       : 0,
     nbCols       : 0,
+    ground       : 0,
     players      : {},
     blocks       : {},
 
     initMap : function(){
         console.log("Generating world...");
         this.nbRows = this.canvasHeight / this.tileSize;
+        this.ground = this.nbRows/2;
         this.nbCols = this.canvasWidth / this.tileSize;
         this.isGenerated = true;
-        console.log("World ready.");
-        // for(var row = 0 ; row < this.nbRows ; row++) {
-        //     this.blocks[row] = {};
-    	// 	for(var col = 0 ; col < this.nbCols ; col++) {
-        //         // if(row > this.ground){
-        //         //     this.blocks[row][col] = this.addBlock(x, y, "dirt");
-        //         // }
-        //         // else{
-        //         //     this.blocks[row][col] = ""; // sky ?
-        //         // }
-    	// 	}
-    	// }
+        for(var row = 0 ; row < this.nbRows ; row++) {
+            this.blocks[row] = {};
+        		for(var col = 0 ; col < this.nbCols ; col++) {
+                if(row > this.ground){
+                  this.addBlock(row, col, "dirt");
+                }
+        		}
+  	     }
+         console.log(this.blocks);
+         console.log("World ready.");
     },
 
     addBlock : function(row, col, type){
