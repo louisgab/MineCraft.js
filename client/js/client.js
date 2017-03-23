@@ -2,6 +2,22 @@ var socket  = io.connect('http://localhost:8080'),
     canvas  = document.getElementById('canvas'),
     context = canvas.getContext('2d');
 
+var preloader = {
+    objects : {},
+    url : {
+        "dirt" : "/img/dirt.png"
+    }
+    init : function(){
+        for (var item in this.url) {
+            var img = new Image();
+            img.src = this.url[item];
+            img.onload = function(){
+                this.objects[item] = img;
+            }
+        }
+    }
+}
+
 var client = {
     pseudo : "",
     game : {},
@@ -75,7 +91,7 @@ var client = {
         //
         // var xSource = (xSourceEnTiles - 1) * 32;
         // var ySource = (ySourceEnTiles - 1) * 32;
-        // context.drawImage(this.image, xSource, ySource, 32, 32, xDestination, yDestination, 32, 32);
+        context.drawImage(this.image, xSource, ySource, 32, 32, xDestination, yDestination, 32, 32);
 
     },
 
@@ -103,6 +119,11 @@ document.addEventListener("keydown", function(e){
 document.addEventListener("keyup", function(e){
     client.keyUp(e);
 });
+
+// Track mouse
+document.addEventListener("mouseover", myFunction);
+document.addEventListener("mousedown", someOtherFunction);
+document.addEventListener("mouseout", someOtherFunction);
 
 /* Update canvas */
 socket.on('update', function(game){
