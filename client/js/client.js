@@ -58,9 +58,14 @@ var canvas = {
         this.setDimensions(cvsMap);
         this.setDimensions(cvsPlayers);
         this.setDimensions(cvsEffects);
+        cvsBag.width  = 648;
+        cvsBag.height = 72;
+        cvsBag.style.width  = '648px';
+        cvsBag.style.height = '72px';
         this.disableSmoothing(ctxMap);
         this.disableSmoothing(ctxPlayers);
         this.disableSmoothing(ctxEffects);
+        this.disableSmoothing(ctxBag);
     }
 };
 
@@ -241,7 +246,7 @@ var client = {
       ctxBag.clearRect(0, 0, 648, 72);
       ctxBag.fillStyle = 'rgba(0,0,0,0.8)';
       ctxBag.fillRect (0, 0, 648, 72);
-      for(var x = 0  ; x < 648 ; x += 72 )
+      for(var x = 0  ; x <= 648 ; x += 72 )
         ctxBag.drawImage(preloader.tiles["dirt"], x + 4, 4, canvas.tileSize, canvas.tileSize);
     }
 };
