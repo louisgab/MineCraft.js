@@ -65,12 +65,6 @@ var game = {
     //
     // },
 
-    isCollision : function(row, col){
-        if(this.isSolid(row, col)){
-            return true;
-        }
-        return false;
-    },
 
     addPlayer : function(id, name){
         var newPlayer = {
@@ -88,27 +82,28 @@ var game = {
         return (0 <= row && row < this.nbRows && 0 <= col && col < this.nbCols);
     },
 
+    isCollision : function(row, col){
+        return (this.isInBounds(row, col) && this.isSolid(row, col));
+    },
+
     canJump : function(row, col){
-        return (!this.isSolid(row, col) && this.isSolid(row + 1, col));
+        return (!this.isCollision(row - 2, col) && !this.isSolid(row, col) && this.isSolid(row + 1, col));
     },
 
     updatePlayer : function(id, movement){
         var player = this.players[id];
-        if(this.isInBounds(player.row, player.col)){
-
-            if (movement.top && !this.isCollision(player.row - 2, player.col) && this.canJump(player.row, player.col)) {
-                player.isJumping = true;
-                player.row--;
-            }
-            if (movement.down && !this.isCollision(player.row + 1, player.col)) {
-                player.row++;
-            }
-            if (movement.left && !this.isCollision(player.row, player.col - 1) && !this.isCollision(player.row - 1, player.col - 1)) {
-                player.col--;
-            }
-            if (movement.right && !this.isCollision(player.row, player.col + 1) && !this.isCollision(player.row - 1, player.col + 1)) {
-                player.col++;
-            }
+        if (movement.top && this.canJump(player.row, player.col)) {
+            player.isJumping = true;
+            player.row--;
+        }
+        if (movement.down && !this.isCollision(player.row + 1, player.col)) {
+            player.row++;
+        }
+        if (movement.left && !this.isCollision(player.row, player.col - 1) && !this.isCollision(player.row - 1, player.col - 1)) {
+            player.col--;
+        }
+        if (movement.right && !this.isCollision(player.row, player.col + 1) && !this.isCollision(player.row - 1, player.col + 1)) {
+            player.col++;
         }
     },
 
