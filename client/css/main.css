@@ -1,41 +1,65 @@
+@font-face {
+    font-family: 'Minecraftia';
+    src: url('Minecraftia.woff2') format('woff2'),
+         url('Minecraftia.woff') format('woff');
+    font-weight: normal;
+    font-style : normal;
+}
 html, body {
     width : 100%;
     height: 100%;
 }
 
 body, button, html, input, textarea {
-    font-size     : 15px;
-    font-family   : 'Press Start 2P', cursive;
+    font-family   : 'Minecraftia', cursive;
     text-rendering: optimizeLegibility;
+    color         : #FFF;
+    font-size     : 16px;
     line-height   : 1.5;
     margin        : 0;
     padding       : 0;
-    color         : #FFF;
 }
 
 body {
-    background     : #111;
     overflow       : hidden;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-optimize-contrast;
+    background     : #111;
 }
 
 canvas {
-    image-rendering: optimizeSpeed;
-    border         : 1px solid #DDD;
-    width          : 1024px;
-    height         : 800px;
-}
-
-#window, canvas {
+    image-rendering: optimizeSpeed; /* Older versions of FF */
+    image-rendering: -moz-crisp-edges; /* FF 6.0+ */
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: -webkit-optimize-contrast; /* Safari */
+    image-rendering: -o-crisp-edges; /* OS X & Windows Opera (12.02+) */
+    image-rendering: pixelated; /* Awesome future-browsers */
+    -ms-interpolation-mode: nearest-neighbor;   /* IE                            */
+    -ms-user-select    : none;
+    -o-user-select     : none;
     -moz-user-select   : none;
     -webkit-user-select: none;
-    -o-user-select     : none;
-    -ms-user-select    : none;
+    position : absolute;
+    border   : none;
+    cursor   : crosshair;
+    top      : 0;
+    left     : 0;
 }
+
+#window  { position: relative; }
+#map     { z-index: 1; }
+#players { z-index: 2; }
+#effects { z-index: 3; }
 
 .wrapper {
     width    : 100%;
     max-width: 1024px;
     margin   : auto;
+}
+
+h1{
+    background-image: url('/img/logo.png');
+    width: 582px;
+    height: 109px;
+    margin: 40px auto;
+    text-indent: -999px;
+    overflow: hidden;
 }

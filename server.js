@@ -32,21 +32,29 @@ io.sockets.on('connection', function(client) {
             game.initMap();
         }
         game.addPlayer(client.id, name);
-        io.sockets.emit('update', game);
+        client.emit('id', client.id);
+        client.emit('map', JSON.stringify(game.map));
+        io.sockets.emit('players', JSON.stringify(game.players));
         console.log(name + ' joined the game.');
     });
 
     /* Player moves */
     client.on('move', function(movement) {
         game.updatePlayer(client.id, movement);
-        io.sockets.emit('update', game);
+        io.sockets.emit('players', JSON.stringify(game.players));
+    });
+
+    /* Player builds */
+    client.on('build', function(data) {
+        game.updateBlock(data.action, data.mouse);
+        io.sockets.emit('map', JSON.stringify(game.map));
     });
 
     /* Player disconnects */
     client.on("disconnect", function() {
         var name = game.getPlayerPseudo(client.id);
         game.removePlayer(client.id);
-        io.sockets.emit('update', game);
+        io.sockets.emit('players', JSON.stringify(game.players));
         console.log(name + ' left the game.');
     });
 });
