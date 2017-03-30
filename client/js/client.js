@@ -2,9 +2,11 @@ var socket     = io.connect('http://localhost:8080'),
     cvsMap     = document.getElementById('map'),
     cvsPlayers = document.getElementById('players'),
     cvsEffects = document.getElementById('effects'),
+    cvsBag     = document.getElementById('bag'),
     ctxMap     = cvsMap.getContext('2d'),
     ctxPlayers = cvsPlayers.getContext('2d'),
-    ctxEffects = cvsEffects.getContext('2d');
+    ctxEffects = cvsEffects.getContext('2d'),
+    ctxBag     = cvsBag.getContext('2d');
 
 var preloader = {
     sources : {
@@ -143,6 +145,7 @@ var client = {
         preloader.init(function(){
             socket.emit('join', client.pseudo);
         });
+        this.drawBag();
         // requestAnimationFrame(this.animate);
     },
     drawMap : function(){
@@ -164,6 +167,7 @@ var client = {
         var x = controller.tileToPos(canvas.nbCols - 2),
             y = controller.tileToPos(1);
         ctxMap.drawImage(preloader.tiles["sun"], x, y, canvas.tileSize, canvas.tileSize);
+
     },
 
     drawPlayers : function(){
@@ -232,6 +236,13 @@ var client = {
     animate : function () {
         this.drawPlayers();
         requestAnimationFrame(this.animate);
+    },
+    drawBag : function(){
+      ctxBag.clearRect(0, 0, 648, 72);
+      ctxBag.fillStyle = 'rgba(0,0,0,0.8)';
+      ctxBag.fillRect (0, 0, 648, 72);
+      for(var x = 0  ; x < 648 ; x += 72 )
+        ctxBag.drawImage(preloader.tiles["dirt"], x + 4, 4, canvas.tileSize, canvas.tileSize);
     }
 };
 

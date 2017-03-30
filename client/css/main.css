@@ -44,10 +44,21 @@ canvas {
     left     : 0;
 }
 
-#window  { position: relative; }
+#window  { position: relative; height:640px;}
 #map     { z-index: 1; }
 #players { z-index: 2; }
 #effects { z-index: 3; }
+#bag{
+  cursor: pointer;
+  width: 648px;
+  height: 72px;
+  bottom: 0;
+  z-index: 4;
+  top: auto;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
 
 .wrapper {
     width    : 100%;
