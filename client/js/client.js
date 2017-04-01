@@ -1,21 +1,23 @@
-var socket     = io.connect('http://localhost:8080'),
-    cvsMap     = document.getElementById('map'),
-    cvsPlayers = document.getElementById('players'),
-    cvsEffects = document.getElementById('effects'),
-    cvsBag     = document.getElementById('bag'),
-    ctxMap     = cvsMap.getContext('2d'),
-    ctxPlayers = cvsPlayers.getContext('2d'),
-    ctxEffects = cvsEffects.getContext('2d'),
-    ctxBag     = cvsBag.getContext('2d');
+var socket      = io.connect('http://localhost:8080'),
+    cvsMap      = document.getElementById('map'),
+    cvsPlayers  = document.getElementById('players'),
+    cvsEffects  = document.getElementById('effects'),
+    cvsSelector = document.getElementById('selector'),
+    ctxMap      = cvsMap.getContext('2d'),
+    ctxPlayers  = cvsPlayers.getContext('2d'),
+    ctxEffects  = cvsEffects.getContext('2d'),
+    ctxSelector = cvsSelector.getContext('2d');
 
 var preloader = {
     sources : {
-        "steve": "/img/steve.png",
-        "alex" : "/img/alex.png",
-        "dirt" : "/img/dirt.png",
-        "stone": "/img/stone.png",
-        "empty": "/img/empty.png",
-        "sun"  : "/img/sun.png"
+        "selector" : "/img/selector.png",
+        "current" : "/img/current.png",
+        "steve"    : "/img/steve.png",
+        "alex"     : "/img/alex.png",
+        "dirt"     : "/img/dirt.png",
+        "stone"    : "/img/stone.png",
+        "empty"    : "/img/empty.png",
+        "sun"      : "/img/sun.png"
         // "coal_ore" : "/img/coal_ore.png",
         // "gold_ore" : "/img/gold_ore.png",
         // "grass" : "/img/grass_side.png",
@@ -58,14 +60,14 @@ var canvas = {
         this.setDimensions(cvsMap);
         this.setDimensions(cvsPlayers);
         this.setDimensions(cvsEffects);
-        cvsBag.width  = 648;
-        cvsBag.height = 72;
-        cvsBag.style.width  = '648px';
-        cvsBag.style.height = '72px';
         this.disableSmoothing(ctxMap);
         this.disableSmoothing(ctxPlayers);
         this.disableSmoothing(ctxEffects);
-        this.disableSmoothing(ctxBag);
+        cvsSelector.width  = 732;
+        cvsSelector.height = 96;
+        cvsSelector.style.width  = '732px';
+        cvsSelector.style.height = '96px';
+        this.disableSmoothing(ctxSelector);
     }
 };
 
@@ -118,6 +120,7 @@ var controller = {
             isValidRow = (player.row -4 < this.mouse.row && this.mouse.row < player.row + 3);
         this.canClick = isValidCol && isValidRow;
         client.drawCursor();
+        client.drawSelector();
     },
     mouseDown : function(e){
         if(!this.canClick) return;
@@ -150,7 +153,6 @@ var client = {
         preloader.init(function(){
             socket.emit('join', client.pseudo);
         });
-        this.drawBag();
         // requestAnimationFrame(this.animate);
     },
     drawMap : function(){
@@ -242,12 +244,14 @@ var client = {
         this.drawPlayers();
         requestAnimationFrame(this.animate);
     },
-    drawBag : function(){
-      ctxBag.clearRect(0, 0, 648, 72);
-      ctxBag.fillStyle = 'rgba(0,0,0,0.8)';
-      ctxBag.fillRect (0, 0, 648, 72);
-      for(var x = 0  ; x <= 648 ; x += 72 )
-        ctxBag.drawImage(preloader.tiles["dirt"], x + 4, 4, canvas.tileSize, canvas.tileSize);
+
+    drawSelector : function(){
+        ctxSelector.clearRect(0, 0, 732, 96);
+        ctxSelector.drawImage(preloader.tiles["selector"], 4, 8, 728, 88);
+        ctxSelector.drawImage(preloader.tiles["current"], 0, 4, 96, 96);
+        // for(var x = 16  ; x < 728 ; x += 80 ){
+        //     ctxSelector.drawImage(preloader.tiles["dirt"], x, 20, 64, 64);
+        // }
     }
 };
 

@@ -48,10 +48,10 @@ canvas {
 #map     { z-index: 1; }
 #players { z-index: 2; }
 #effects { z-index: 3; }
-#bag{
+#selector{
   cursor: pointer;
-  width: 648px;
-  height: 72px;
+  width: 732px;
+  height: 96px;
   bottom: 0;
   z-index: 4;
   top: auto;
