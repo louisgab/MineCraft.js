@@ -1,0 +1,14 @@
+{
+    "selector" : "/img/selector.png",
+    "current"  : "/img/current.png",
+    "steve"    : "/img/steve.png",
+    "alex"     : "/img/alex.png",
+    "dirt"     : "/img/dirt.png",
+    "stone"    : "/img/stone.png",
+    "empty"    : "/img/empty.png",
+    "sun"      : "/img/sun.png",
+    "break"    : "/img/break.png",
+    "coal_ore" : "/img/coal_ore.png",
+    "grass"    : "/img/grass.png",
+    "gold_ore" : "/img/gold_ore.png"
+}

@@ -1,22 +1,17 @@
 var game = {
     isGenerated  : false,
-    canvasWidth  : 1024,
-    canvasHeight : 640,
-    nbCols       : 16,
-    nbRows       : 10,
-    tileSize     : 64,
-    scale        : 4,
-    ground       : 5,
+    config       : {},
     players      : {},
     map          : {},
     type : ["dirt", "stone"],
 
-    initMap : function(){
+    initMap : function(config){
         console.log("Generating world...");
-        for(var row = 0 ; row < this.nbRows ; row++) {
+        this.config = config;
+        for(var row = 0 ; row < this.config.nbRows ; row++) {
         this.map[row] = {};
-            for(var col = 0 ; col < this.nbCols ; col++) {
-                if(row > this.ground){
+            for(var col = 0 ; col < this.config.nbCols ; col++) {
+                if(row > this.config.ground){
                     var tile = this.type[Math.floor(Math.random() * 2)];
                     this.addBlock(row, col, tile);
                 }
@@ -24,6 +19,9 @@ var game = {
                     this.addBlock(row, col, "sky");
                 }
             }
+        }
+        for(var col = 0 ; col < this.config.nbCols ; col++) {
+            this.map[this.config.ground+1][col] = "grass";
         }
         this.isGenerated = true;
         console.log("World ready.");
@@ -33,19 +31,9 @@ var game = {
         this.map[row][col] = type;
     },
 
-    updateBlock : function(action, mouse){
-        if(action.left){
-            this.addBlock(mouse.row, mouse.col, "dirt");
-        }
-        if(action.right){
-            this.removeBlock(mouse.row, mouse.col);
-        }
-    },
-
     removeBlock : function(row, col){
         if(this.isSolid(row, col)){
-            if(row <= this.ground){
-
+            if(row <= this.config.ground){
                 this.map[row][col] = "sky";
             }
             else{
@@ -67,19 +55,18 @@ var game = {
 
 
     addPlayer : function(id, name){
-        var newPlayer = {
+        this.players[id] = {
             id   : id,
             name : name,
-            col  : this.nbCols/2,
-            row  : Math.floor(this.ground),
+            col  : this.config.nbCols/2,
+            row  : Math.floor(this.config.ground),
             isJumping : false,
             isFalling : false
         }
-        this.players[id] = newPlayer;
     },
 
     isInBounds : function(row, col){
-        return (0 <= row && row < this.nbRows && 0 <= col && col < this.nbCols);
+        return (0 <= row && row < this.config.nbRows && 0 <= col && col < this.config.nbCols);
     },
 
     isCollision : function(row, col){

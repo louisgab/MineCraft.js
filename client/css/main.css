@@ -50,8 +50,8 @@ canvas {
 #effects { z-index: 3; }
 #selector{
   cursor: pointer;
-  width: 732px;
-  height: 96px;
+  width: 368px;
+  height: 48px;
   bottom: 0;
   z-index: 4;
   top: auto;

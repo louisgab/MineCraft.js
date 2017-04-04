@@ -1,0 +1,9 @@
+{
+    "width"    : 1024,
+    "height"   : 640,
+    "nbCols"   : 32,
+    "nbRows"   : 20,
+    "scale"    : 2,
+    "tileSize" : 32,
+    "ground"   : 10
+}
