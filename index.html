@@ -12,7 +12,18 @@
 <body>
     <div class="wrapper">
         <h1>MineCraft.js</h1>
-        <div id="window">
+        <div id="startScreen">
+            <div id="container">
+                <input type="text" placeholder="Enter your name here" id="playerNameInput" autofocus required>
+                <button id="startButton">Play !</button>
+            </div>
+        </div>
+        <div id="messageScreen" style="display:none;">
+            <div id="container">
+                <h2 id="messageText"></h2>
+            </div>
+        </div>
+        <div id="gameScreen" style="display:none;">
             <canvas id="map" width="1024" height="640"></canvas>
             <canvas id="players" width="1024" height="640"></canvas>
             <canvas id="effects" width="1024" height="640"></canvas>
@@ -20,6 +31,12 @@
         </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/tiles.js"></script>
+    <script src="/js/canvas.js"></script>
+    <script src="/js/control.js"></script>
+    <script src="/js/draw.js"></script>
+    <script src="/js/anim.js"></script>
+    <script src="/js/util.js"></script>
     <script src="/js/client.js"></script>
 </body>
 

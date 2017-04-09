@@ -1,39 +1,81 @@
 var game = {
-    isGenerated  : false,
-    config       : {},
-    players      : {},
-    map          : {},
-    type : ["dirt", "stone"],
+    isGenerated : false,
+    config      : {},
+    players     : {},
+    map         : {},
 
-    initMap : function(config){
-        console.log("Generating world...");
-        this.config = config;
-        for(var row = 0 ; row < this.config.nbRows ; row++) {
-        this.map[row] = {};
-            for(var col = 0 ; col < this.config.nbCols ; col++) {
-                if(row > this.config.ground){
-                    var tile = this.type[Math.floor(Math.random() * 2)];
-                    this.addBlock(row, col, tile);
+//-------------------------------//   MAP   //-------------------------------//
+
+    /* Generate ground to top part */
+    createSky : function(){
+        for (var row = 0 ; row < this.config.mapRows ; row++) {
+            this.map[row] = {};
+            for (var col = 0 ; col < this.config.mapCols ; col++){
+                this.map[row][col] = (row > this.config.mapGround) ? "empty" : "sky";
+            }
+        }
+    },
+
+    /* Generate ground to bottom part (with caves !) */
+    createUnderground : function (map){
+        for (var row = this.config.mapGround + 1 ; row < this.config.mapRows ; row++)
+            for (var col = 0 ; col < this.config.mapCols ; col++)
+                if (Math.random() < 0.5) map[row][col] = "dirt";
+        for(var row = this.config.mapGround + 1 ; row < this.config.mapRows ; row++){
+            for(var col = 0; col < this.config.mapCols ; col++){
+                var nbs = this.countNeighbours(map, row, col);
+                if(map[row][col] == "dirt"){
+                    this.map[row][col] = (nbs < 4) ? "empty" : "dirt";
                 }
-                else{
-                    this.addBlock(row, col, "sky");
+                else if(map[row][col] == "empty"){
+                    this.map[row][col] = (nbs > 4) ? "dirt" : "empty";
                 }
             }
         }
-        for(var col = 0 ; col < this.config.nbCols ; col++) {
-            this.map[this.config.ground+1][col] = "grass";
+    },
+
+    /* Generate ground part : grass only */
+    createSurface : function(){
+        for(var col = 0 ; col < this.config.mapCols ; col++) {
+            this.map[this.config.mapGround + 1][col] = "grass";
         }
+    },
+
+    /* Count solid blocks and bounds */
+    countNeighbours : function (map, row, col){
+        var count = 0;
+        for(var i = -1 ; i < 2 ; i++){
+            for(var j = -1 ; j < 2 ; j++){
+                if(i == 0 && j == 0) continue;
+                var nb_row = i + row, nb_col = j + col;
+                var isBoundRow = nb_row < 0 || nb_row >= this.config.mapRows;
+                var isBoundCol = nb_col < 0 || nb_col >= this.config.mapCols;
+                if(isBoundRow || isBoundCol || map[nb_row][nb_col] == "dirt") count++;
+            }
+        }
+        return count;
+    },
+
+    /* Init and generate all the map */
+    generate : function(config){
+        this.config = config;
+        console.log("Generating world...");
+        this.createSky();
+        this.createUnderground(this.map);
+        this.createSurface();
         this.isGenerated = true;
         console.log("World ready.");
     },
 
+    /* Add a block */
     addBlock : function(row, col, type){
         this.map[row][col] = type;
     },
 
+    /* Remove a block */
     removeBlock : function(row, col){
         if(this.isSolid(row, col)){
-            if(row <= this.config.ground){
+            if(row <= this.config.mapGround){
                 this.map[row][col] = "sky";
             }
             else{
@@ -42,6 +84,7 @@ var game = {
         }
     },
 
+    /* Test if a block  is solid */
     isSolid : function(row, col){
         if(this.map[row][col] == "empty" || this.map[row][col] == "sky"){
             return false;
@@ -49,57 +92,92 @@ var game = {
         return true;
     },
 
-    // canJump : function(row, col){
-    //
-    // },
+//-----------------------------//   PLAYERS   //-----------------------------//
 
-
+    /* Create a player object and add it to the list */
     addPlayer : function(id, name){
         this.players[id] = {
             id   : id,
             name : name,
-            col  : this.config.nbCols/2,
-            row  : Math.floor(this.config.ground),
-            isJumping : false,
-            isFalling : false
+            x  : this.tileToPos(this.config.mapCols/2),
+            y  : this.tileToPos(this.config.mapRows/2)
         }
     },
 
+    /* Check if a tile is inside the map */
     isInBounds : function(row, col){
-        return (0 <= row && row < this.config.nbRows && 0 <= col && col < this.config.nbCols);
+        return (0 <= row && row < this.config.mapRows && 0 <= col && col < this.config.mapCols);
     },
 
-    isCollision : function(row, col){
-        return (this.isInBounds(row, col) && this.isSolid(row, col));
+    /* Check if a tile a solid, so walkable or not */
+    isSolid: function (row, col) {
+        switch(this.map[row][col]){
+            case "empty": return false; break;
+            case "sky":   return false; break;
+            default:      return true;  break;
+        }
     },
 
+    /* Check if the player can go upside (need to falls afterwards...) */
     canJump : function(row, col){
-        return (!this.isCollision(row - 2, col) && !this.isSolid(row, col) && this.isSolid(row + 1, col));
+        return this.isInBounds(row - 2, col) && !this.isSolid(row - 2, col) &&
+               (!this.isInBounds(row + 1, col) || (this.isInBounds(row + 1, col) && this.isSolid(row + 1, col)));
     },
 
-    updatePlayer : function(id, movement){
-        var player = this.players[id];
-        if (movement.top && this.canJump(player.row, player.col)) {
-            player.isJumping = true;
-            player.row--;
+    /* Check if the player can go downside */
+    canGoDown : function(row, col){
+        return this.isInBounds(row + 1, col) && !this.isSolid(row + 1, col);
+    },
+
+    /* Check if the player can go leftside */
+    canGoLeft : function(row, col){
+        return this.isInBounds(row, col - 1) && !this.isSolid(row, col - 1);
+    },
+
+    /* Check if the player can go rightside */
+    canGoRight : function(row, col){
+        return this.isInBounds(row, col + 1) && !this.isSolid(row, col + 1);
+    },
+
+    /* Move the player when possible */
+    updatePlayer : function(id, keyboard){
+        var player = this.players[id],
+            row = this.posToTile(player.y),
+            col = this.posToTile(player.x);
+        if (keyboard.up && this.canJump(row, col)){
+            player.y -= this.config.tileSize;
         }
-        if (movement.down && !this.isCollision(player.row + 1, player.col)) {
-            player.row++;
+        if (keyboard.down && this.canGoDown(row, col)){
+            player.y += this.config.tileSize;
         }
-        if (movement.left && !this.isCollision(player.row, player.col - 1) && !this.isCollision(player.row - 1, player.col - 1)) {
-            player.col--;
+        if (keyboard.left && this.canGoLeft(row, col)){
+            player.x -= this.config.tileSize;
         }
-        if (movement.right && !this.isCollision(player.row, player.col + 1) && !this.isCollision(player.row - 1, player.col + 1)) {
-            player.col++;
+        if (keyboard.right && this.canGoRight(row, col)){
+            player.x += this.config.tileSize;
         }
     },
 
+    /* Retrieve a client name */
+    getPlayerPseudo : function(id){
+        return this.players[id].name;
+    },
+
+    /* Delete a client from the list */
     removePlayer : function(id){
         delete this.players[id];
     },
 
-    getPlayerPseudo : function(id){
-        return this.players[id].name;
+//------------------------------//   UTILS   //------------------------------//
+
+    /* Convert a pos (x or y) in a tile (col or row) */
+    posToTile: function (pos) {
+        return Math.floor(pos / this.config.tileSize);
+    },
+
+    /* Convert a tile (col or row) in a pos (x or y) */
+    tileToPos: function (tile) {
+        return tile * this.config.tileSize;
     }
 };
 module.exports = game;

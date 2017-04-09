@@ -1,9 +1,13 @@
 {
-    "width"    : 1024,
-    "height"   : 640,
-    "nbCols"   : 32,
-    "nbRows"   : 20,
-    "scale"    : 2,
+    "cvsWidth"  : 1024,
+    "cvsHeight" : 640,
+    "cvsCols"   : 32,
+    "cvsRows"   : 20,
+
+    "mapCols"   : 32,
+    "mapRows"   : 20,
+    "mapGround" : 10,
+
     "tileSize" : 32,
-    "ground"   : 10
+    "scale"    : 2
 }

@@ -1,3 +1,4 @@
+/* Load minecraft font */
 @font-face {
     font-family: 'Minecraftia';
     src: url('Minecraftia.woff2') format('woff2'),
@@ -5,59 +6,27 @@
     font-weight: normal;
     font-style : normal;
 }
+
 html, body {
-    width : 100%;
-    height: 100%;
+    width      : 100%;
+    height     : 100%;
+    overflow   : hidden;
+    background : #111;
 }
 
 body, button, html, input, textarea {
     font-family   : 'Minecraftia', cursive;
     text-rendering: optimizeLegibility;
-    color         : #FFF;
-    font-size     : 16px;
-    line-height   : 1.5;
-    margin        : 0;
-    padding       : 0;
-}
-
-body {
-    overflow       : hidden;
-    background     : #111;
-}
-
-canvas {
-    image-rendering: optimizeSpeed; /* Older versions of FF */
-    image-rendering: -moz-crisp-edges; /* FF 6.0+ */
-    image-rendering: -webkit-crisp-edges;
-    image-rendering: -webkit-optimize-contrast; /* Safari */
-    image-rendering: -o-crisp-edges; /* OS X & Windows Opera (12.02+) */
-    image-rendering: pixelated; /* Awesome future-browsers */
-    -ms-interpolation-mode: nearest-neighbor;   /* IE                            */
+    text-shadow   : 2px 2px 0px rgba(0,0,0,0.8);
     -ms-user-select    : none;
     -o-user-select     : none;
     -moz-user-select   : none;
     -webkit-user-select: none;
-    position : absolute;
-    border   : none;
-    cursor   : crosshair;
-    top      : 0;
-    left     : 0;
-}
-
-#window  { position: relative; height:640px;}
-#map     { z-index: 1; }
-#players { z-index: 2; }
-#effects { z-index: 3; }
-#selector{
-  cursor: pointer;
-  width: 368px;
-  height: 48px;
-  bottom: 0;
-  z-index: 4;
-  top: auto;
-  left: 0;
-  right: 0;
-  margin: auto;
+    color       : #FFF;
+    font-size   : 16px;
+    line-height : 1.5;
+    margin      : 0;
+    padding     : 0;
 }
 
 .wrapper {
@@ -68,9 +37,106 @@ canvas {
 
 h1{
     background-image: url('/img/logo.png');
-    width: 582px;
-    height: 109px;
-    margin: 40px auto;
-    text-indent: -999px;
-    overflow: hidden;
+    width           : 582px;
+    height          : 109px;
+    margin          : 40px auto;
+    text-indent     : -999px;
+    overflow        : hidden;
+}
+
+h2 {
+    font-weight: normal;
+}
+
+/* Pixelated images polyfill */
+canvas,
+#playerNameInput,
+#startButton,
+#messageScreen,
+#startScreen {
+    image-rendering: optimizeSpeed;             /* Older versions of FF     */
+    image-rendering: -moz-crisp-edges;          /* FF 6.0+                  */
+    image-rendering: -webkit-crisp-edges;       /* Older versions of chrome */
+    image-rendering: -webkit-optimize-contrast; /* Safari                   */
+    image-rendering: -o-crisp-edges;            /* OS X & Windows Opera     */
+    image-rendering: pixelated;                 /* Awesome future-browsers  */
+    -ms-interpolation-mode: nearest-neighbor;   /* IE                       */
+}
+
+canvas {
+    cursor   : url("/img/crosshair.png"), crosshair;
+    position : absolute;
+    border   : none;
+    top      : 0;
+    left     : 0;
+	margin   : 0;
+    padding  : 0;
+}
+
+#container {
+    display       : inline-block;
+    vertical-align: middle;
+    width         : 400px;
+    line-height   : 1.5;
+}
+
+#playerNameInput {
+    background-image : url('/img/gui_field.png');
+    background-size  : 400px 40px;
+    background-repeat: no-repeat;
+    text-align : center;
+    outline    : none;
+    width      : 400px;
+    height     : 40px;
+    border     : 0;
+}
+
+#startButton {
+    background-image : url('/img/gui_button.png');
+    background-size  : 400px 40px;
+    background-repeat: no-repeat;
+    cursor       : pointer;
+    margin-top   : 10px;
+    margin-bottom: 10px;
+    width        : 400px;
+    height       : 40px;
+    padding      : 10px;
+    border       : 0;
+}
+
+#startButton:active,
+#startButton:hover {
+    background-image: url('/img/gui_hover.png');
+}
+
+#messageScreen,
+#startScreen {
+    background-image : url('/img/empty.png');
+    background-repeat: repeat;
+    background-size  : 32px 32px;
+    text-align : center;
+    line-height: 640px;
+}
+
+#messageScreen,
+#gameScreen,
+#startScreen {
+    position: relative;
+    height  : 640px;
+    width   : 1024px;
+}
+
+#map     { z-index: 1; }
+#players { z-index: 2; }
+#effects { z-index: 3; }
+
+#selector{
+  width  : 368px;
+  height : 48px;
+  margin : auto;
+  top    : auto;
+  bottom : 0;
+  left   : 0;
+  right  : 0;
+  z-index: 4;
 }
