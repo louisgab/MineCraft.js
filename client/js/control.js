@@ -1,8 +1,8 @@
 var control = {
     selected : 0,
     mouse : {
-        col : 0,
         row : 0,
+        col : 0,
     },
     keyboard : {
         up   : false,
@@ -54,11 +54,11 @@ var control = {
     /* When the mouse is moved */
     mouseMove : function(e){
         var player    = util.currentClient(),
-            playerCol = util.posToTile(player.x),
-            playerRow = util.posToTile(player.y),
+            playerCol = util.posToTile(camera.screenX + camera.x),
+            playerRow = util.posToTile(camera.screenY + camera.y),
             rectBound = cvsEffects.getBoundingClientRect();
-        control.mouse.col = util.posToTile(e.clientX - rectBound.left);
-        control.mouse.row = util.posToTile(e.clientY - rectBound.top);
+        control.mouse.col = util.posToTile(e.clientX - rectBound.left + camera.x);
+        control.mouse.row = util.posToTile(e.clientY - rectBound.top + camera.y);
         /* Player can only interact with 2 tiles around */
         var isValidCol = (playerCol - 3 < control.mouse.col && control.mouse.col < playerCol + 3),
             isValidRow = (playerRow - 4 < control.mouse.row && control.mouse.row < playerRow + 3);
@@ -80,7 +80,7 @@ var control = {
                 control.click.time = setTimeout(function() {
                     socket.emit('destroy', control.mouse);
                 }, 1000); //1sec
-                draw.tile(ctxEffects, "break", util.tileToPos(control.mouse.col), util.tileToPos(control.mouse.row));
+                draw.tile(ctxEffects, "break", util.tileToPos(control.mouse.col) - camera.x, util.tileToPos(control.mouse.row) - camera.y, 1, 1);
                 break;
         }
     },
@@ -110,6 +110,12 @@ var control = {
         draw.selector();
     },
 
+    /* Responsive canvas */
+    resize : function(){
+        sizer.update();
+        anim.render();
+    },
+
     /* Start listening */
     init : function(){
         /* Track the keyboard */
@@ -123,13 +129,14 @@ var control = {
         cvsEffects.addEventListener('wheel',     control.mousewheel, false);
         cvsSelector.addEventListener('wheel',    control.mousewheel, false);
 
+        /* Track window size */
+        window.addEventListener('resize', control.resize, false);
+
         /* Prevent display of right click menu */
         cvsEffects.addEventListener('contextmenu', function(e){ e.preventDefault(); }, false);
 
-        /* One day maybe... */
-        //window.addEventListener('resize', draw.resize);
-        // Animate only when current tab is focused
-        //window.addEventListener('focus', draw.unpause, false);
-        //window.addEventListener('blur',  draw.pause,   false);
+        /* Animate only when current tab is focused */
+        window.addEventListener('focus', anim.run,  false);
+        window.addEventListener('blur',  anim.stop, false);
     }
 };

@@ -1,10 +1,10 @@
 /* Load minecraft font */
 @font-face {
-    font-family: 'Minecraftia';
+    font-family : 'Minecraftia';
+    font-weight : normal;
+    font-style  : normal;
     src: url('Minecraftia.woff2') format('woff2'),
          url('Minecraftia.woff') format('woff');
-    font-weight: normal;
-    font-style : normal;
 }
 
 html, body {
@@ -15,37 +15,32 @@ html, body {
 }
 
 body, button, html, input, textarea {
-    font-family   : 'Minecraftia', cursive;
-    text-rendering: optimizeLegibility;
-    text-shadow   : 2px 2px 0px rgba(0,0,0,0.8);
-    -ms-user-select    : none;
-    -o-user-select     : none;
-    -moz-user-select   : none;
-    -webkit-user-select: none;
-    color       : #FFF;
-    font-size   : 16px;
-    line-height : 1.5;
-    margin      : 0;
-    padding     : 0;
-}
-
-.wrapper {
-    width    : 100%;
-    max-width: 1024px;
-    margin   : auto;
+    font-family         : 'Minecraftia', cursive;
+    text-rendering      : optimizeLegibility;
+    text-shadow         : 2px 2px 0px rgba(0,0,0,0.8);
+    -ms-user-select     : none;
+    -o-user-select      : none;
+    -moz-user-select    : none;
+    -webkit-user-select : none;
+    color               : #FFF;
+    font-size           : 16px;
+    line-height         : 1.5;
+    margin              : 0;
+    padding             : 0;
 }
 
 h1{
-    background-image: url('/img/logo.png');
-    width           : 582px;
-    height          : 109px;
-    margin          : 40px auto;
-    text-indent     : -999px;
-    overflow        : hidden;
+    background-image : url('/img/logo.png');
+    overflow         : hidden;
+    margin           : auto;
+    margin-bottom    : 80px;
+    width            : 582px;
+    height           : 109px;
+    text-indent      : -999px;
 }
 
 h2 {
-    font-weight: normal;
+    font-weight : normal;
 }
 
 /* Pixelated images polyfill */
@@ -54,13 +49,13 @@ canvas,
 #startButton,
 #messageScreen,
 #startScreen {
-    image-rendering: optimizeSpeed;             /* Older versions of FF     */
-    image-rendering: -moz-crisp-edges;          /* FF 6.0+                  */
-    image-rendering: -webkit-crisp-edges;       /* Older versions of chrome */
-    image-rendering: -webkit-optimize-contrast; /* Safari                   */
-    image-rendering: -o-crisp-edges;            /* OS X & Windows Opera     */
-    image-rendering: pixelated;                 /* Awesome future-browsers  */
-    -ms-interpolation-mode: nearest-neighbor;   /* IE                       */
+    image-rendering : optimizeSpeed;             /* Older versions of FF     */
+    image-rendering : -moz-crisp-edges;          /* FF 6.0+                  */
+    image-rendering : -webkit-crisp-edges;       /* Older versions of chrome */
+    image-rendering : -webkit-optimize-contrast; /* Safari                   */
+    image-rendering : -o-crisp-edges;            /* OS X & Windows Opera     */
+    image-rendering : pixelated;                 /* Awesome future-browsers  */
+    -ms-interpolation-mode : nearest-neighbor;   /* IE                       */
 }
 
 canvas {
@@ -73,70 +68,74 @@ canvas {
     padding  : 0;
 }
 
-#container {
-    display       : inline-block;
-    vertical-align: middle;
-    width         : 400px;
-    line-height   : 1.5;
+.container {
+    position : relative;
+    display  : table;
+    height   : 100%;
+    width    : 100%;
+}
+
+.verticalWrap{
+    vertical-align : middle;
+    display        : table-cell;
+}
+
+.horizontalWrap{
+    position  : relative;
+    display   : block;
+    margin    : auto;
+    max-width : 600px;
+    width     : 100%;
 }
 
 #playerNameInput {
-    background-image : url('/img/gui_field.png');
-    background-size  : 400px 40px;
-    background-repeat: no-repeat;
-    text-align : center;
-    outline    : none;
-    width      : 400px;
-    height     : 40px;
-    border     : 0;
+    background-image  : url('/img/gui_field.png');
+    background-size   : 400px 40px;
+    background-repeat : no-repeat;
+    outline           : none;
+    text-align        : center;
+    width             : 400px;
+    height            : 40px;
+    border            : 0;
 }
 
 #startButton {
-    background-image : url('/img/gui_button.png');
-    background-size  : 400px 40px;
-    background-repeat: no-repeat;
-    cursor       : pointer;
-    margin-top   : 10px;
-    margin-bottom: 10px;
-    width        : 400px;
-    height       : 40px;
-    padding      : 10px;
-    border       : 0;
+    background-image  : url('/img/gui_button.png');
+    background-size   : 400px 40px;
+    background-repeat : no-repeat;
+    cursor            : pointer;
+    margin-top        : 10px;
+    margin-bottom     : 10px;
+    padding           : 10px;
+    width             : 400px;
+    height            : 40px;
+    border            : 0;
 }
 
 #startButton:active,
 #startButton:hover {
-    background-image: url('/img/gui_hover.png');
+    background-image : url('/img/gui_hover.png');
 }
 
 #messageScreen,
 #startScreen {
-    background-image : url('/img/empty.png');
-    background-repeat: repeat;
-    background-size  : 32px 32px;
-    text-align : center;
-    line-height: 640px;
+    background-image  : url('/img/empty.png');
+    background-repeat : repeat;
+    background-size   : 32px 32px;
+    text-align        : center;
 }
 
-#messageScreen,
-#gameScreen,
-#startScreen {
-    position: relative;
-    height  : 640px;
-    width   : 1024px;
-}
-
-#map     { z-index: 1; }
-#players { z-index: 2; }
-#effects { z-index: 3; }
+#map     { z-index : 1; }
+#players { z-index : 2; }
+#effects { z-index : 3; }
 
 #selector{
-  width  : 368px;
-  height : 48px;
-  margin : auto;
-  top    : auto;
-  bottom : 0;
-  left   : 0;
-  right  : 0;
-  z-index: 4;
+  width   : 368px;
+  height  : 48px;
+  margin  : auto;
+  top     : auto;
+  bottom  : 0;
+  left    : 0;
+  right   : 0;
+  z-index : 4;
 }

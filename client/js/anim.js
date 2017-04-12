@@ -1,23 +1,28 @@
 /* Not in use : will be necessary for jump and fall... */
 var anim = {
     isRunning : false,
-    last : 0,
+    fps       : 0,
+    last      : 0,
 
     /* Draw everything */
     render : function(){
+        camera.update();
         draw.map();
         draw.players();
-        draw.grid();
+        // draw.grid();
+        anim.stop();
     },
 
     /* Animation frame with stop and go */
     loop : function () {
         if(!anim.isRunning) return;
+        /* FPS calcul */
         var now   = Date.now(),
             delta = now - anim.last,
             dt    = delta / 1000.0;
         // draw.update(dt);
         anim.render();
+        anim.fps  = 1 / dt;
         anim.last = now;
         window.requestAnimFrame(anim.loop);
     },

@@ -18,10 +18,10 @@ app.use(express.static(__dirname + '/client'));
 /* Load main page */
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/index.html');
-})
+});
 
 /* Start listening for clients */
-server.listen(8080, function() {
+server.listen(8080, '0.0.0.0', function() {
     console.log('Server ready. Listening...');
 });
 
@@ -59,6 +59,9 @@ io.sockets.on('connection', function(client) {
     /* Player destroys */
     client.on('destroy', function(mouse) {
         game.removeBlock(mouse.row, mouse.col);
+        if(game.checkFallEverybody(mouse.row, mouse.col)){
+            io.sockets.emit('players', game.players);
+        }
         io.sockets.emit('map', game.map);
     });
 

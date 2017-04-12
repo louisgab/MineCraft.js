@@ -10,30 +10,37 @@
 </head>
 
 <body>
-    <div class="wrapper">
-        <h1>MineCraft.js</h1>
-        <div id="startScreen">
-            <div id="container">
+    <div id="startScreen" class="container">
+        <div class="verticalWrap">
+            <div class="horizontalWrap">
+                <h1>MineCraft.js</h1>
                 <input type="text" placeholder="Enter your name here" id="playerNameInput" autofocus required>
                 <button id="startButton">Play !</button>
             </div>
         </div>
-        <div id="messageScreen" style="display:none;">
-            <div id="container">
+    </div>
+    <div id="messageScreen" class="container" style="display:none;">
+        <div class="verticalWrap">
+            <div class="horizontalWrap">
                 <h2 id="messageText"></h2>
             </div>
         </div>
-        <div id="gameScreen" style="display:none;">
-            <canvas id="map" width="1024" height="640"></canvas>
-            <canvas id="players" width="1024" height="640"></canvas>
-            <canvas id="effects" width="1024" height="640"></canvas>
-            <canvas id="selector" width="368" height="48"></canvas>
+    </div>
+    <div id="gameScreen" class="container" style="display:none;">
+        <div class="verticalWrap">
+            <div class="horizontalWrap">
+                <canvas id="map"></canvas>
+                <canvas id="players"></canvas>
+                <canvas id="effects"></canvas>
+                <canvas id="selector"></canvas>
+            </div>
         </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/tiles.js"></script>
-    <script src="/js/canvas.js"></script>
+    <script src="/js/sizer.js"></script>
     <script src="/js/control.js"></script>
+    <script src="/js/camera.js"></script>
     <script src="/js/draw.js"></script>
     <script src="/js/anim.js"></script>
     <script src="/js/util.js"></script>

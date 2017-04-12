@@ -16,7 +16,7 @@ var tiles = {
     },
 
     /* Access to DOM elements */
-    get : function(name){
+    get : function(key){
         return (key in this.images) ? this.images[key] : null;
     }
 };

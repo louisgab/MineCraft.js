@@ -4,9 +4,9 @@
     "cvsCols"   : 32,
     "cvsRows"   : 20,
 
-    "mapCols"   : 32,
-    "mapRows"   : 20,
-    "mapGround" : 10,
+    "mapCols"   : 640,
+    "mapRows"   : 400,
+    "mapGround" : 200,
 
     "tileSize" : 32,
     "scale"    : 2

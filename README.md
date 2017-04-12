@@ -22,9 +22,11 @@ The game will then be accessible at `http://localhost:8080`
 Minecraft is a game about placing blocks and going on adventures.
 
 #### Features
-enable players to build constructions out of textured cubes in a 3D procedurally generated world. Other activities in the game include exploration, resource gathering, crafting, and combat.
+This Minecraft adaptation in 2D is a game which enable players to build constructions out of textured cubes in a 3D procedurally generated world. Other activities in the game include exploration, resource gathering, crafting, and combat.
 
 
 ## Ressources
-Image loader, mouse coordinates and animation start and stop : http://www.html5canvastutorials.com/
+Some code adapted from the following sources :
+Image loader, mouse coordinates and animation start&stop : http://www.html5canvastutorials.com/
 Caves generation : https://gamedevelopment.tutsplus.com/tutorials/generate-random-cave-levels-using-cellular-automata--gamedev-9664
+Camera handling and scrolling map : https://github.com/mozdevs/gamedev-js-tiles

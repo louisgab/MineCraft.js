@@ -1,5 +1,5 @@
 /* Socket, DOM Elements, variables */
-var socket          = io.connect('http://localhost:8080'),
+var socket          = io(),
     startButton     = document.getElementById('startButton'),
     playerNameInput = document.getElementById('playerNameInput'),
     messageScreen   = document.getElementById('messageScreen'),
@@ -13,9 +13,8 @@ var socket          = io.connect('http://localhost:8080'),
     ctxMap          = cvsMap.getContext('2d'),
     ctxPlayers      = cvsPlayers.getContext('2d'),
     ctxEffects      = cvsEffects.getContext('2d'),
-    ctxSelector     = cvsSelector.getContext('2d'),
-    screenWidth     = window.innerWidth,
-    screenHeight    = window.innerHeight;
+    ctxSelector     = cvsSelector.getContext('2d');
+
 
 /* Main object */
 var client = {
@@ -29,23 +28,23 @@ var client = {
     load : function(){
         client.pseudo = playerNameInput.value;
         messageText.innerHTML       = 'Loading world...';
-        messageScreen.style.display = 'block';
+        messageScreen.style.display = 'table';
         startScreen.style.display   = 'none';
         socket.emit('join', client.pseudo);
     },
 
     /* Init everything, draw everything, and ready ! */
     init : function(){
-        canvas.init();
+        sizer.init();
         control.init();
         tiles.preload(function(){
-            draw.map();
             draw.selector();
-            draw.players();
-            // anim.init();
+            camera.init();
+            anim.init();
+            /* Short delay, just to avoid flashing screen */
             setTimeout(function () {
                 messageScreen.style.display = 'none';
-                gameScreen.style.display    = 'block';
+                gameScreen.style.display    = 'table';
             }, 500);
         });
     }
@@ -74,16 +73,16 @@ socket.on('welcome', function(data){
 /* Update canvas on demand */
 socket.on('map', function(map){
     client.map = map;
-    draw.map();
+    anim.run();
 });
 socket.on('players', function(players){
     client.players = players;
-    draw.players();
+    anim.run();
 });
 
 /* Notify deconnexion */
 socket.on('disconnect', function () {
     messageText.innerHTML       = 'Connection lost';
-    messageScreen.style.display = 'block';
+    messageScreen.style.display = 'table';
     gameScreen.style.display    = 'none';
 });

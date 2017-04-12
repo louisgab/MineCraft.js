@@ -10,5 +10,6 @@
     "break"    : "/img/break.png",
     "coal_ore" : "/img/coal_ore.png",
     "grass"    : "/img/grass.png",
-    "gold_ore" : "/img/gold_ore.png"
+    "gold_ore" : "/img/gold_ore.png",
+    "bedrock"  : "/img/bedrock.png"
 }
