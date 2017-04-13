@@ -3,6 +3,9 @@
     "version": "1.0.0",
     "description": "A Minecraft-like in 2D",
     "main": "server.js",
+    "scripts": {
+      "start": "node server.js"
+    },
     "private": true,
     "keywords": [
         "minecraft",
@@ -10,6 +13,9 @@
         "realtime",
         "mutliplayer"
     ],
+    "engines": {
+      "node": "6.10.2"
+    },
     "repository" : {
         "type" : "git",
         "url" : "https://github.com/louisgab/MineCraft.js.git"

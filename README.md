@@ -14,7 +14,7 @@ To run / install this game, you'll need:
 After downloading all the dependencies, you can run the server with the following command:
 
 ```
-node server.js
+npm start
 ```
 The game will then be accessible at `http://localhost:8080`
 
@@ -29,4 +29,4 @@ This Minecraft adaptation in 2D is a game which enable players to build construc
 Some code adapted from the following sources :
 Image loader, mouse coordinates and animation start&stop : http://www.html5canvastutorials.com/
 Caves generation : https://gamedevelopment.tutsplus.com/tutorials/generate-random-cave-levels-using-cellular-automata--gamedev-9664
-Camera handling and scrolling map : https://github.com/mozdevs/gamedev-js-tiles
+Camera handling and scrolling map : https://developer.mozilla.org/en-US/docs/Games/Techniques/Tilemaps/Square_tilemaps_implementation:_Scrolling_maps

@@ -204,7 +204,12 @@ var game = {
 
     /* Retrieve a client name */
     getPlayerPseudo : function(id){
-        return this.players[id].name;
+        if (id in this.players){
+            return this.players[id].name;
+        }
+        else{
+            return null;
+        }
     },
 
     /* Delete a client from the list */

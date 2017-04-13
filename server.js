@@ -2,27 +2,30 @@
 var express  = require('express'),
     http     = require('http'),
     socketio = require('socket.io'),
-    fs       = require('fs'),
     config   = require('./config.json'),
     sources  = require('./sources.json'),
     game     = require('./game');
 
 /* Initialisation */
-var app     = express();
+var app     = express(),
     server  = http.Server(app),
     io      = socketio(server);
 
+/* use default config ip:port unless it exists a preconfigured environnement */
+var port = process.env.PORT || config.port,
+    ip   = process.env.IP   || config.ip;
+
 /* Serve static files (css, img...) */
-app.use(express.static(__dirname + '/client'));
+app.use(express.static(__dirname + '/public'));
 
 /* Load main page */
-app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/index.html');
+app.get('/', function(request, response) {
+    response.sendFile(__dirname + '/index.html');
 });
 
 /* Start listening for clients */
-server.listen(8080, '0.0.0.0', function() {
-    console.log('Server ready. Listening...');
+server.listen(port, ip, function() {
+    console.log('Server ready. Listening at '+ip+':'+port+'...');
 });
 
 /* Network processing */
@@ -68,8 +71,10 @@ io.sockets.on('connection', function(client) {
     /* Player disconnects */
     client.on("disconnect", function() {
         var name = game.getPlayerPseudo(client.id);
-        game.removePlayer(client.id);
-        io.sockets.emit('players', game.players);
-        console.log(name + ' left the game.');
+        if(name){
+            game.removePlayer(client.id);
+            io.sockets.emit('players', game.players);
+            console.log(name + ' left the game.');
+        }
     });
 });

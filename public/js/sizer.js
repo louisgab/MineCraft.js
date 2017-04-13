@@ -21,12 +21,12 @@ var sizer = {
 
     /* Special case for selector size */
     initSelector : function(){
-        var width = (182 + 2) * client.config.scale,
-            height = 24 * client.config.scale;
-        cvsSelector.width  = width;
-        cvsSelector.height = height;
-        cvsSelector.style.width  = width + 'px';
-        cvsSelector.style.height = height + 'px';
+        var selectorWidth = (182 + 2) * client.config.scale,
+            selectorHeight = 24 * client.config.scale;
+        cvsSelector.width  = selectorWidth;
+        cvsSelector.height = selectorHeight;
+        cvsSelector.style.width  = selectorWidth + 'px';
+        cvsSelector.style.height = selectorHeight + 'px';
         this.disableSmoothing(ctxSelector);
     },
 
