@@ -2,7 +2,7 @@
 <p align="center">MineCraft.Js est un jeu multijoueur ayant pour objectif de ressembler au célèbre <a href="https://minecraft.net/">MineCraft</a> dans une version 2D dans le navigateur.
 </p>
 
----
+
 
 ## Installation
 #### Technologies nécessaires
@@ -10,7 +10,7 @@
 - HTML5 / CSS3 / Javascript (testé avec Chrome 57).
 - Node.js (pour le serveur multijoueur).
 - Npm (pour la gestion de paquets) avec Socket.io (pour la communication serveur) et Express (pour gérer plus facilement les routes étant donné le nombre important de fichiers externes).
-
+---
 #### Démarrage
 
 - Si besoin, modifiez vos préférences dans le fichier `config.json` (ip, port, dimensions).
@@ -22,7 +22,7 @@
 
 Le jeu est déployé à l'adresse [https://minecraftjs2017.herokuapp.com/](https://minecraftjs2017.herokuapp.com/) (compte heroku gratuit, serveur un peu lent).
 
----
+
 
 ## Règles du jeu
 #### But
@@ -33,7 +33,7 @@ Minecraft est un jeu de type "bac à sable" c'est à dire que le joueur est comp
 
 Déplacez-vous au moyen des touches directionnelles `haut`, `bas`, `gauche`, `droite`. Faites défiler votre inventaire en scrollant (inutile pour l'instant).
 
----
+
 
 ## Fonctionnalités
 #### Implémentées...
@@ -54,7 +54,7 @@ Déplacez-vous au moyen des touches directionnelles `haut`, `bas`, `gauche`, `dr
 - Chat et commandes textuelles.
 - Artisanat, mode survie, ennemis et combat...
 
----
+
 
 ## Architecture
 
@@ -63,13 +63,13 @@ Il y a également deux fichiers de configuration `config.json` et `sources.js` c
 
 Enfin, le fichier `index.html` correspond à la partie client. Toutes les ressources nécessaires se trouvent dans le dossier `public`, lui-même divisé en 3 dossiers correspondant au type de fichier. Dans le dossier `js`, il y a le fichier principal `client.js` ainsi que les différents modules.
 
----
+
 
 ## Répartition tes tâches
 
 Bien qu'au début du projet nous nous étions attribués des tâches spécifiques (gestion multijoueur par Louis-Gabriel, grille de jeu par Alex), très vite nous avons basculé dans un mode simultanné en travaillant conjointement sur chaque fonctionnalité pour éviter de devoir attendre et dépendre des choix d'implémentation de l'autre. Ainsi, la quasi-totalité du code a été réalisé en étroite collaboration.
 
----
+
 
 ## Crédits
 
