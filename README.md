@@ -1,5 +1,5 @@
-<p align="center">![MineCraft.Js](https://minecraftjs2017.herokuapp.com/img/logo.png)</p>
-<p align="center">MineCraft.Js est un jeu multijoueur ayant pour objectif de ressembler au célèbre [MineCraft](https://minecraft.net/) dans une version 2D dans le navigateur.
+<p align="center"><img src="https://minecraftjs2017.herokuapp.com/img/logo.png"></p>
+<p align="center">MineCraft.Js est un jeu multijoueur ayant pour objectif de ressembler au célèbre <a href="https://minecraft.net/">MineCraft</a> dans une version 2D dans le navigateur.
 </p>
 
 ---
