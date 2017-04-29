@@ -10,7 +10,7 @@
 - HTML5 / CSS3 / Javascript (testé avec Chrome 57).
 - Node.js (pour le serveur multijoueur).
 - Npm (pour la gestion de paquets) avec Socket.io (pour la communication serveur) et Express (pour gérer plus facilement les routes étant donné le nombre important de fichiers externes).
----
+
 #### Démarrage
 
 - Si besoin, modifiez vos préférences dans le fichier `config.json` (ip, port, dimensions).
