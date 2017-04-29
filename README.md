@@ -58,11 +58,12 @@ Déplacez-vous au moyen des touches directionnelles `haut`, `bas`, `gauche`, `dr
 
 ## Architecture
 
-A la racine du répertoire, il y a le fichier `serveur.js` où se déroule la gestion serveur qui se charge d'appeler les fonctions de traitement situées dans le fichier `game.js`. Notamment,
-Il y a également deux fichiers de configuration `config.json` et `sources.js` contenant respectivement les variables essentielles du jeu et les urls des graphismes.
+A la racine du répertoire, il y a le fichier `serveur.js` où se déroule la gestion serveur qui se charge d'appeler les fonctions de traitement situées dans le fichier `game.js`. Le fichier `index.html` correspond à la partie client. Toutes les ressources nécessaires se trouvent dans le dossier `public`, lui-même divisé en 3 dossiers correspondant aux types de fichiers. Dans le dossier `js`, il y a le fichier principal `client.js` ainsi que les différents modules.
+Il y a également à la racine deux fichiers de configuration `config.json` et `sources.js` contenant respectivement les variables essentielles du jeu et les urls des graphismes.
 
-Enfin, le fichier `index.html` correspond à la partie client. Toutes les ressources nécessaires se trouvent dans le dossier `public`, lui-même divisé en 3 dossiers correspondant au type de fichier. Dans le dossier `js`, il y a le fichier principal `client.js` ainsi que les différents modules.
+Globalement, le serveur est responsable de créer le monde lors de la première connexion, autoriser ou non un déplacement, autoriser ou non une construction/destruction, mettre à jour la liste de joueurs et la carte au besoin et prévenir tous les joueurs à chaque changement en leur envoyant les données à jour.
 
+Quand toute la page est chargée, le client attend que le joueur rentre son pseudo avant de déclencher un premier échange avec le serveur contenant le pseudo du joueur, le serveur lui renvoie alors les données nécessaires à l'initialisation du jeu (et de ses différents modules).
 
 
 ## Répartition tes tâches
@@ -73,7 +74,7 @@ Bien qu'au début du projet nous nous étions attribués des tâches spécifique
 
 ## Crédits
 
-Les graphismes sont issus des ressources suviantes :
+Les graphismes sont issus des ressources suivantes :
 - Pack de textures téléchargé sur  [MineCraftForum](http://www.minecraftforum.net/forums/mapping-and-modding/resource-packs/resource-pack-discussion/1249790-16x-32x-64x-1-8-the-default-texture-files?comment=1).
 - Logo généré par [TextCraft](https://textcraft.net/).
 
