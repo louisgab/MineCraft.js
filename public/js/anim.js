@@ -1,8 +1,7 @@
-/* Not in use : will be necessary for jump and fall... */
 var anim = {
-    isRunning : false,
     fps       : 0,
     last      : 0,
+    isRunning : false,
 
     /* Draw everything */
     render : function(){
@@ -54,4 +53,4 @@ var anim = {
         })();
         anim.run();
     }
-}
+};

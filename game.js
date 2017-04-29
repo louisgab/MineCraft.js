@@ -18,11 +18,12 @@ var game = {
 
     /* Generate ground to bottom part (with caves !) */
     createUnderground : function (map){
-        for (var row = this.config.mapGround + 1 ; row < this.config.mapRows ; row++)
-            for (var col = 0 ; col < this.config.mapCols ; col++)
+        var row, col;
+        for (row = this.config.mapGround + 1 ; row < this.config.mapRows ; row++)
+            for (col = 0 ; col < this.config.mapCols ; col++)
                 if (Math.random() < 0.5) map[row][col] = "dirt";
-        for(var row = this.config.mapGround + 1 ; row < this.config.mapRows ; row++){
-            for(var col = 0; col < this.config.mapCols ; col++){
+        for(row = this.config.mapGround + 1 ; row < this.config.mapRows ; row++){
+            for(col = 0; col < this.config.mapCols ; col++){
                 var nbs = this.countNeighbours(map, row, col);
                 if(map[row][col] == "dirt"){
                     this.map[row][col] = (nbs < 4) ? "empty" : "dirt";
@@ -64,8 +65,8 @@ var game = {
 
     /* Init and generate all the map */
     generate : function(config){
-        this.config = config;
         console.log("Generating world...");
+        this.config = config;
         this.createSky();
         this.createUnderground(this.map);
         this.createSurface();
@@ -82,21 +83,7 @@ var game = {
     /* Remove a block */
     removeBlock : function(row, col){
         if(this.isSolid(row, col)){
-            if(row <= this.config.mapGround){
-                this.map[row][col] = "sky";
-            }
-            else{
-                this.map[row][col] = "empty";
-            }
-        }
-    },
-
-    /* Check if a tile a solid, so walkable or not */
-    isSolid : function (row, col) {
-        switch(this.map[row][col]){
-            case "empty": return false;
-            case "sky":   return false;
-            default:      return true;
+            this.map[row][col] = (row <= this.config.mapGround) ? "sky" : "empty";
         }
     },
 
@@ -107,17 +94,11 @@ var game = {
         this.players[id] = {
             id   : id,
             name : name,
-            x  : this.tileToPos(this.config.mapCols/2),
-            y  : this.tileToPos(this.config.mapRows/2)
+            x    : this.tileToPos(this.config.mapCols/2),
+            y    : this.tileToPos(this.config.mapRows/2),
         };
+        console.log(name + ' joined the game.');
     },
-
-    /* Check if a tile is inside the map */
-    isInBounds : function(row, col){
-        return (0 <= row && row < this.config.mapRows && 0 <= col && col < this.config.mapCols);
-    },
-
-
 
     /* Check if the player can go upside (need to falls afterwards...) */
     canJump : function(row, col){
@@ -142,7 +123,7 @@ var game = {
                this.isInBounds(row - 1, col + 1) && !this.isSolid(row - 1, col + 1);
     },
 
-    /* Move the player when possible */
+    /* Move the player when possible with autojump and fall */
     updatePlayer : function(id, keyboard){
         var player = this.players[id],
             row = this.posToTile(player.y),
@@ -172,25 +153,27 @@ var game = {
             }
         }
         if(!keyboard.up){
-            this.checkFall(player);
+            this.isFalling(player);
         }
     },
 
-    checkFallEverybody : function(row, col){
+    /* Check if one or more of the players can fall */
+    isSomeoneFalling : function(row, col){
         var flag = false;
         for (var id in this.players){
             var player = this.players[id],
                 playerRow = this.posToTile(player.y),
                 playerCol = this.posToTile(player.x);
             if(row == (playerRow + 1) && col == playerCol){
-                flag = this.checkFall(player);
+                flag = this.isFalling(player);
             }
         }
         return flag;
 
     },
 
-    checkFall : function(player){
+    /* Check if a player can fall */
+    isFalling : function(player){
         var playerRow = this.posToTile(player.y),
             playerCol = this.posToTile(player.x),
             flag = false;
@@ -202,22 +185,29 @@ var game = {
         return flag;
     },
 
-    /* Retrieve a client name */
-    getPlayerPseudo : function(id){
-        if (id in this.players){
-            return this.players[id].name;
-        }
-        else{
-            return null;
-        }
-    },
-
     /* Delete a client from the list */
     removePlayer : function(id){
+        if (!(id in this.players)) return;
+        var name = this.players[id].name;
         delete this.players[id];
+        console.log(name + ' left the game.');
     },
 
 //------------------------------//   UTILS   //------------------------------//
+
+    /* Check if a tile a solid, so walkable or not */
+    isSolid : function (row, col) {
+        switch(this.map[row][col]){
+            case "empty": return false;
+            case "sky":   return false;
+            default:      return true;
+        }
+    },
+
+    /* Check if a tile is inside the map */
+    isInBounds : function(row, col){
+        return (0 <= row && row < this.config.mapRows && 0 <= col && col < this.config.mapCols);
+    },
 
     /* Convert a pos (x or y) in a tile (col or row) */
     posToTile: function (pos) {

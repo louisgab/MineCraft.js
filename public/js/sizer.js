@@ -1,7 +1,14 @@
 var sizer = {
-
     width  : 0,
-    height :0,
+    height : 0,
+
+    /* Detect window dimension and find nearest possible values */
+    detectDimensions : function(){
+        this.width  = util.findMultiple(window.innerWidth);
+        this.height = util.findMultiple(window.innerHeight);
+        gameScreen.children[0].children[0].style.maxWidth = this.width + 'px';
+        gameScreen.children[0].children[0].style.height   = this.height + 'px';
+    },
 
     /* Make sure every canvas is good sized */
     setDimensions : function(canvas){
@@ -28,16 +35,6 @@ var sizer = {
         cvsSelector.style.width  = selectorWidth + 'px';
         cvsSelector.style.height = selectorHeight + 'px';
         this.disableSmoothing(ctxSelector);
-    },
-
-    /* Detect window dimension and find nearest possible values */
-    detectDimensions : function(){
-        this.width  = util.findMultiple(window.innerWidth);
-        this.height = util.findMultiple(window.innerHeight);
-        gameScreen.children[0].children[0].style.maxWidth = this.width + 'px';
-        gameScreen.children[0].children[0].style.height   = this.height + 'px';
-        client.config.cvsWidth  = this.width;
-        client.config.cvsHeight = this.height;
     },
 
     /* Apply dimensions to all canvas */

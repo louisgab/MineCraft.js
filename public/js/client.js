@@ -1,4 +1,4 @@
-/* Socket, DOM Elements, variables */
+/* Socket and DOM Elements */
 var socket          = io(),
     startButton     = document.getElementById('startButton'),
     playerNameInput = document.getElementById('playerNameInput'),
@@ -30,6 +30,7 @@ var client = {
         messageText.innerHTML       = 'Loading world...';
         messageScreen.style.display = 'table';
         startScreen.style.display   = 'none';
+        network.init();
         socket.emit('join', client.pseudo);
     },
 
@@ -38,9 +39,9 @@ var client = {
         sizer.init();
         control.init();
         tiles.preload(function(){
-            draw.selector();
             camera.init();
             anim.init();
+            draw.selector();
             /* Short delay, just to avoid flashing screen */
             setTimeout(function () {
                 messageScreen.style.display = 'none';
@@ -59,30 +60,3 @@ window.onload = function(){
         if (key === 13) client.load(); // Pressed enter
     };
 };
-
-/* Approved by server */
-socket.on('welcome', function(data){
-    client.id      = data.id;
-    client.players = data.players;
-    client.map     = data.map;
-    client.config  = data.config;
-    tiles.sources  = data.sources;
-    client.init();
-});
-
-/* Update canvas on demand */
-socket.on('map', function(map){
-    client.map = map;
-    anim.run();
-});
-socket.on('players', function(players){
-    client.players = players;
-    anim.run();
-});
-
-/* Notify deconnexion */
-socket.on('disconnect', function () {
-    messageText.innerHTML       = 'Connection lost';
-    messageScreen.style.display = 'table';
-    gameScreen.style.display    = 'none';
-});

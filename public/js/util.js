@@ -20,4 +20,4 @@ var util = {
     currentClient : function(){
         return client.players[client.id];
     },
-}
+};

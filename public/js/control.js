@@ -79,8 +79,10 @@ var control = {
                 control.click.right = true;
                 control.click.time = setTimeout(function() {
                     socket.emit('destroy', control.mouse);
-                }, 1000); //1sec
-                draw.tile(ctxEffects, "break", util.tileToPos(control.mouse.col) - camera.x, util.tileToPos(control.mouse.row) - camera.y, 1, 1);
+                }, 1000); // destroy after 1sec mouse pressed
+                var x = util.tileToPos(control.mouse.col) - camera.x,
+                    y = util.tileToPos(control.mouse.row) - camera.y;
+                draw.tile(ctxEffects, "break", x, y, 1, 1);
                 break;
         }
     },

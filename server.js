@@ -11,7 +11,7 @@ var app     = express(),
     server  = http.Server(app),
     io      = socketio(server);
 
-/* use default config ip:port unless it exists a preconfigured environnement */
+/* Use default config ip:port unless a preconfigured environnement exists */
 var port = process.env.PORT || config.port,
     ip   = process.env.IP   || config.ip;
 
@@ -25,13 +25,16 @@ app.get('/', function(request, response) {
 
 /* Start listening for clients */
 server.listen(port, ip, function() {
-    console.log('Server ready. Listening at '+ip+':'+port+'...');
+    console.log('Server ready. Listening at ' + ip + ':' + port + '...');
 });
 
 /* Network processing */
 io.sockets.on('connection', function(client) {
 
-    /* Player joins */
+    // A player wants to join.
+    // - generate a world if needed
+    // - create the player object and send him all the data
+    // - notice others
     client.on('join', function(name) {
         if(!game.isGenerated) game.generate(config);
         game.addPlayer(client.id, name);
@@ -42,39 +45,41 @@ io.sockets.on('connection', function(client) {
             config : config,
             sources: sources
         });
-        /* Warn others */
         client.broadcast.emit('players', game.players);
-        console.log(name + ' joined the game.');
     });
 
-    /* Player moves */
+    // A player wants to move.
+    // - check collisions then update players
+    // - notice everybody
     client.on('move', function(keyboard) {
         game.updatePlayer(client.id, keyboard);
         io.sockets.emit('players', game.players);
     });
 
-    /* Player builds */
+    // A player wants to build.
+    // - check autorize then update map
+    // - notice everybody
     client.on('build', function(mouse) {
         game.addBlock(mouse.row, mouse.col, "dirt");
         io.sockets.emit('map', game.map);
     });
 
-    /* Player destroys */
+    // A player wants to destroy.
+    // - check autorize and falls then update map
+    // - notice everybody
     client.on('destroy', function(mouse) {
         game.removeBlock(mouse.row, mouse.col);
-        if(game.checkFallEverybody(mouse.row, mouse.col)){
+        if(game.isSomeoneFalling(mouse.row, mouse.col)){
             io.sockets.emit('players', game.players);
         }
         io.sockets.emit('map', game.map);
     });
 
-    /* Player disconnects */
+    // A player has disconnected
+    // - Check if is logged then update players
+    // - notice others
     client.on("disconnect", function() {
-        var name = game.getPlayerPseudo(client.id);
-        if(name){
-            game.removePlayer(client.id);
-            io.sockets.emit('players', game.players);
-            console.log(name + ' left the game.');
-        }
+        game.removePlayer(client.id);
+        client.broadcast.emit('players', game.players);
     });
 });
