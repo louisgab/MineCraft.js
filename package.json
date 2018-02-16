@@ -1,7 +1,8 @@
 {
     "name": "minecraftjs",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A Minecraft-like in 2D",
+    "homepage": "https://github.com/louisgab/MineCraft.js",
     "main": "server.js",
     "scripts": {
       "start": "node server.js"
@@ -13,9 +14,6 @@
         "realtime",
         "mutliplayer"
     ],
-    "engines": {
-      "node": "6.10.2"
-    },
     "repository" : {
         "type" : "git",
         "url" : "https://github.com/louisgab/MineCraft.js.git"
@@ -27,6 +25,5 @@
     "contributors": [
         { "name" : "Louis Gabriel" },
         { "name" : "Alex Taylor" }
-    ],
-    "homepage": "https://github.com/louisgab/MineCraft.js"
+    ]
 }
